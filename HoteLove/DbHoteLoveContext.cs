@@ -1,9 +1,10 @@
 ﻿using HoteLove.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace HoteLove
 {
-    public class DbHoteLoveContext : DbContext
+    public class DbHoteLoveContext : IdentityDbContext
     {
         public DbHoteLoveContext(DbContextOptions<DbHoteLoveContext> options) : base(options) { }
 
