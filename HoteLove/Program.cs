@@ -1,6 +1,8 @@
 using HoteLove;
 using HoteLove.Migrations;
 using HoteLove.Models;
+using HoteLove.Services;
+using HoteLove.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +15,7 @@ builder.Services.AddDbContext<DbHoteLoveContext>(options
 builder.Services.AddDefaultIdentity<IdentityUser>()
     .AddEntityFrameworkStores<DbHoteLoveContext>();
 
-
+builder.Services.AddScoped<IHotelService, HotelService>();
 
 
 var app = builder.Build();
