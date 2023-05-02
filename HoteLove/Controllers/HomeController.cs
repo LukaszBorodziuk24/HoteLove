@@ -1,4 +1,5 @@
 ﻿using HoteLove.Models;
+using HoteLove.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,15 +8,19 @@ namespace HoteLove.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IHotelService _hotelService;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, IHotelService hotelService)
         {
             _logger = logger;
+            _hotelService = hotelService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var Hotel = await _hotelService.GetAll();
+            return View(Hotel);
         }
 
         public IActionResult Privacy()

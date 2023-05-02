@@ -1,6 +1,7 @@
 ﻿using HoteLove.Models;
 using HoteLove.Services;
 using HoteLove.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HoteLove.Controllers
@@ -16,12 +17,14 @@ namespace HoteLove.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(HotelModel hotel)
         {
             await _hotelService.Create(hotel);

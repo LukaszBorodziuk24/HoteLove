@@ -13,9 +13,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DbHoteLoveContext>(options
     => options.UseSqlServer(builder.Configuration.GetConnectionString("HoteLove")));
 builder.Services.AddDefaultIdentity<IdentityUser>()
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DbHoteLoveContext>();
 
 builder.Services.AddScoped<IHotelService, HotelService>();
+builder.Services.AddScoped<IUserContext, UserContext>();
 
 
 var app = builder.Build();

@@ -1,5 +1,6 @@
 ﻿using HoteLove.Models;
 using HoteLove.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace HoteLove.Services
 {
@@ -15,5 +16,8 @@ namespace HoteLove.Services
             _dbContext.Add(hotel);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<HotelModel>> GetAll()
+            => await _dbContext.Hotels.ToListAsync();
     }
 }
