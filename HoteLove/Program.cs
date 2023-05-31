@@ -18,6 +18,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>()
 
 builder.Services.AddScoped<IHotelService, HotelService>();
 builder.Services.AddScoped<IUserContext, UserContext>();
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+//    .AddEntityFrameworkStores<DbHoteLoveContext>();
 
 
 var app = builder.Build();

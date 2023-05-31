@@ -10,21 +10,21 @@ namespace HoteLove.Controllers
     {
         private readonly IHotelService _hotelService;
 
-        
+
         public HotelsController(IHotelService hotelService)
         {
             _hotelService = hotelService;
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Hotel_User")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Hotel_User")]
         public async Task<IActionResult> Create(HotelModel hotel)
         {
             await _hotelService.Create(hotel);

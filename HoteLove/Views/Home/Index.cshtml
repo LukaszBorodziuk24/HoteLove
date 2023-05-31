@@ -8,67 +8,25 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rating)
-            </td>
-            <td>
-                <a asp-action="Delete" asp-route-id="@item.Id">Zarezerwuj</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="card-columns">
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Location: @Html.DisplayFor(modelItem => item.Location)</li>
+                    <li class="list-group-item">Price: @Html.DisplayFor(modelItem => item.Price)</li>
+                    <li class="list-group-item">Phone: @Html.DisplayFor(modelItem => item.PhoneNumber)</li>
+                    <li class="list-group-item">Address: @Html.DisplayFor(modelItem => item.Address)</li>
+                    <li class="list-group-item">Email: @Html.DisplayFor(modelItem => item.Email)</li>
+                </ul>
+                @if (User.IsInRole("Regular_User"))
+                {
+                    <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-primary">Zarezerwuj</a>
+                }
+            </div>
+        </div>
+    }
+</div>

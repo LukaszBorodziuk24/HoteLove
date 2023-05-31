@@ -23,6 +23,5 @@ namespace HoteLove.Models
 
 
 
-        public int Rating { get; set; }
     }
 }

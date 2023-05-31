@@ -1,4 +1,6 @@
-﻿namespace HoteLove.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace HoteLove.Models
 {
     public class ApplicationUser
     {

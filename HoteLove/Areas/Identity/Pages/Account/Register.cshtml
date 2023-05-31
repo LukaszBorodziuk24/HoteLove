@@ -28,11 +28,11 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <select  class="form-select" aria-label="Default select example">
-                    <option value="User">Użytkownik</option>
-                    <option value="HotelEmployee">Pracownik hotelu</option>
+                <select name="Input.SelectedRole" class="form-select" aria-label="Default select example">
+                    <option value="Regular_User">Użytkownik</option>
+                    <option value="Hotel_User">Pracownik hotelu</option>
                 </select>
-                <label >Role</label>
+                <label>Role</label>
             </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
