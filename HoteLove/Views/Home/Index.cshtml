@@ -4,28 +4,29 @@
     ViewData["Title"] = "Nasza Oferta";
 }
 
-<h1>Index</h1>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1>Nasza oferta</h1>
 <div class="card-columns">
     @foreach (var item in Model)
     {
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
-                <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                <h5 class="card-title">@item.Name</h5>
+                <p class="card-text">@item.Description</p>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Location: @Html.DisplayFor(modelItem => item.Location)</li>
-                    <li class="list-group-item">Price: @Html.DisplayFor(modelItem => item.Price)</li>
-                    <li class="list-group-item">Phone: @Html.DisplayFor(modelItem => item.PhoneNumber)</li>
-                    <li class="list-group-item">Address: @Html.DisplayFor(modelItem => item.Address)</li>
-                    <li class="list-group-item">Email: @Html.DisplayFor(modelItem => item.Email)</li>
+                    <li class="list-group-item">Lokalizacja: @item.Location</li>
+                    <li class="list-group-item">Cena za noc: @item.Price</li>
+                    <li class="list-group-item">Numer telefonu: @item.PhoneNumber</li>
+                    <li class="list-group-item">Adres: @item.Address</li>
+                    <li class="list-group-item">Email: @item.Email</li>
                 </ul>
                 @if (User.IsInRole("Regular_User"))
                 {
                     <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-primary">Zarezerwuj</a>
                 }
+                <h5>Komentarze:</h5>
+                @Html.Partial("_CommentForm", item.Id)
+                    
+
             </div>
         </div>
     }

@@ -26,5 +26,7 @@ namespace HoteLove.Services
 
             return new ApplicationUser(id, email);
         }
+
+        public string GetUserId() => _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 }

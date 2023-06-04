@@ -1,0 +1,14 @@
+﻿@model int
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Dodaj komentarz</h5>
+        <form action="@Url.Action("CreateComment", "Home")" method="post">
+            <input type="hidden" name="hotelId" value="@Model" />
+            <div class="form-group">
+                <textarea class="form-control" name="content" rows="3" placeholder="Treść komentarza"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Dodaj</button>
+        </form>
+    </div>
+</div>

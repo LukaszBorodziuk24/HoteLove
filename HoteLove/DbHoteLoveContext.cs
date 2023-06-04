@@ -9,6 +9,7 @@ namespace HoteLove
         public DbHoteLoveContext(DbContextOptions<DbHoteLoveContext> options) : base(options) { }
 
         public DbSet<HotelModel> Hotels { get; set; }
+        public DbSet<CommentModel> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

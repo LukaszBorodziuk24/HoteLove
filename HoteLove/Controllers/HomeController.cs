@@ -33,5 +33,31 @@ namespace HoteLove.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateComment(int hotelId, string content)
+        {
+            // Pobierz hotel o danym Id
+            var hotel = await _hotelService.GetById(hotelId);
+            if (hotel == null)
+            {
+                return NotFound();
+            }
+
+            // Utwórz nowy komentarz
+            var comment = new CommentModel
+            {
+                Content = content,
+                CreatedAt = DateTime.Now,
+                HotelId = hotelId
+            };
+
+            // Dodaj komentarz do bazy danych
+            await _hotelService.AddComment(comment);
+
+            // Przekieruj użytkownika na stronę z listą hoteli
+            return RedirectToAction("Index");
+        }
+
     }
 }

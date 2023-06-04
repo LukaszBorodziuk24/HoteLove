@@ -6,29 +6,30 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HoteLove.Controllers
 {
+    [Authorize(Roles = "Hotel_User")]
     public class HotelsController : Controller
     {
         private readonly IHotelService _hotelService;
+        private readonly IUserContext _userContext;
 
-
-        public HotelsController(IHotelService hotelService)
+        public HotelsController(IHotelService hotelService, IUserContext userContext)
         {
             _hotelService = hotelService;
+            _userContext = userContext;
         }
 
         [HttpGet]
-        [Authorize(Roles = "Hotel_User")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize(Roles = "Hotel_User")]
         public async Task<IActionResult> Create(HotelModel hotel)
         {
+            hotel.UserId = _userContext.GetUserId();
             await _hotelService.Create(hotel);
-            return RedirectToAction(nameof(Create));
+            return RedirectToAction("Index","Home");
         }
     }
 }

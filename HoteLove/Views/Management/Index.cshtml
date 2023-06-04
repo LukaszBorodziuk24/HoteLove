@@ -1,36 +1,30 @@
-﻿<p>
-    Tworzenie Hotelu<h1>Edytuj</h1>
+﻿@model List<HoteLove.Models.HotelModel>
 
-    <hr />
+@{
+    ViewData["Title"] = "Hotel Management";
+}
 
-    <div class="row">
-        <div class="col-md-4">
-            <form method="post" action="Create">
-                <div class="form-group mb-3">
-                    <label class="control-label" for="Name">Nazwa Hotelu</label>
-                    <input class="form-control" type="text" id="Name" name="Name" />
-                </div>
-                <div class="form-group mb-3">
-                    <label class="control-label" for="Description">Opis</label>
-                    <input class="form-control" type="text" id="Description" name="Description" />
-                </div>
-                <div class="form-group mb-3">
-                    <label class="control-label" for="Price">Cena</label>
-                    <input class="form-control" type="text" id="Price" name="Price" />
-                </div>
-                <div class="form-group mb-3">
-                    <label class="control-label" for="PhoneNumber">Numer Telefonu</label>
-                    <input class="form-control" type="text" id="PhoneNumber" name="PhoneNumber" />
-                </div>
-                <div class="form-group mb-3">
-                    <label class="control-label" for="Email">Email</label>
-                    <input class="form-control" type="text" id="Email" name="Email" />
-                </div>
-                <hr />
-                <div class="form-group mb-3">
-                    <input type="submit" value="Dodaj" class="btn btn-primary" />
-                </div>
-            </form>
+<h1>Hotel Management</h1>
+
+<div class="card-columns">
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@item.Name</h5>
+                <p class="card-text">@item.Description</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Location: @item.Location</li>
+                    <li class="list-group-item">Price: @item.Price</li>
+                    <li class="list-group-item">Phone: @item.PhoneNumber</li>
+                    <li class="list-group-item">Address: @item.Address</li>
+                    <li class="list-group-item">Email: @item.Email</li>
+                </ul>
+                <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-primary">Edit</a>
+                <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display: inline-block;">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this hotel?')">Delete</button>
+                </form>
+            </div>
         </div>
-    </div>
-</p>
+    }
+</div>
