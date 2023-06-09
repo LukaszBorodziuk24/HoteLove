@@ -10,6 +10,7 @@ namespace HoteLove
 
         public DbSet<HotelModel> Hotels { get; set; }
         public DbSet<CommentModel> Comments { get; set; }
+        public DbSet<ReservationModel> Reservations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

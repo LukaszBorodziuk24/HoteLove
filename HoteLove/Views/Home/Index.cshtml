@@ -1,30 +1,52 @@
-﻿@model IEnumerable<HoteLove.Models.HotelModel>
+﻿@using HoteLove.Services.Interfaces;
+@model IEnumerable<HoteLove.Models.ViewModel>
 
 @{
     ViewData["Title"] = "Nasza Oferta";
 }
-
+@inject IReservationService reservationService;
+@inject IUserContext userContext;
 <h1>Nasza oferta</h1>
 <div class="card-columns">
     @foreach (var item in Model)
     {
+        var hotel = item.Hotel;
+        var comments = item.Comments;
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">@item.Name</h5>
-                <p class="card-text">@item.Description</p>
+                <h5 class="card-title">@hotel.Name</h5>
+                <p class="card-text">@hotel.Description</p>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Lokalizacja: @item.Location</li>
-                    <li class="list-group-item">Cena za noc: @item.Price</li>
-                    <li class="list-group-item">Numer telefonu: @item.PhoneNumber</li>
-                    <li class="list-group-item">Adres: @item.Address</li>
-                    <li class="list-group-item">Email: @item.Email</li>
+                    <li class="list-group-item">Lokalizacja: @hotel.Location</li>
+                    <li class="list-group-item">Cena za noc: @hotel.Price</li>
+                    <li class="list-group-item">Numer telefonu: @hotel.PhoneNumber</li>
+                    <li class="list-group-item">Adres: @hotel.Address</li>
+                    <li class="list-group-item">Email: @hotel.Email</li>
                 </ul>
+
+                <h5>Komentarze:</h5>
+                @if (User.IsInRole("Regular_User") && !reservationService.IsHotelAlreadyReserved(userContext.GetUserId(), hotel.Id))
+                {   
+                    <form action="@Url.Action("Create", "Reservation")" method="post">
+                        <input type="hidden" name="hotelId" value="@hotel.Id" />
+                        <button type="submit" class="btn btn-primary">Zarezerwuj</button>
+                    </form>
+
+                }
                 @if (User.IsInRole("Regular_User"))
                 {
-                    <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-primary">Zarezerwuj</a>
+                    @Html.Partial("_commentform", hotel.Id)
                 }
-                <h5>Komentarze:</h5>
-                @Html.Partial("_CommentForm", item.Id)
+                @foreach (var comment in comments)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">@comment.Content</p>
+                            <p class="card-text">Data dodania: @comment.CreatedAt</p>
+                        </div>
+                    </div>
+                }
+
                     
 
             </div>

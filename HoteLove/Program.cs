@@ -28,6 +28,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>()
 
 builder.Services.AddScoped<IHotelService, HotelService>();
 builder.Services.AddScoped<IUserContext, UserContext>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
+
 
 var app = builder.Build();
 

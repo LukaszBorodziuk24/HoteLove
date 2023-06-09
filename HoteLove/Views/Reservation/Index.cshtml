@@ -1,0 +1,37 @@
+﻿@model List<HoteLove.Models.HotelModel>
+
+@{
+    ViewData["Title"] = "Moje rezerwacje";
+}
+
+<h1>Moje rezerwacje</h1>
+
+@if (Model.Any())
+{
+    <div class="card-columns">
+        @foreach (var hotel in Model)
+        {
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@hotel.Name</h5>
+                    <p class="card-text">@hotel.Description</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Lokalizacja: @hotel.Location</li>
+                        <li class="list-group-item">Cena za noc: @hotel.Price</li>
+                        <li class="list-group-item">Numer telefonu: @hotel.PhoneNumber</li>
+                        <li class="list-group-item">Adres: @hotel.Address</li>
+                        <li class="list-group-item">Email: @hotel.Email</li>
+                    </ul>
+                    <form action="@Url.Action("Delete", "Reservation")" method="post">
+                        <input type="hidden" name="hotelId" value="@hotel.Id" />
+                        <button type="submit" class="btn btn-danger">Usuń</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>Nie masz żadnych zarezerwowanych hoteli.</p>
+}

@@ -4,27 +4,35 @@
     ViewData["Title"] = "Hotel Management";
 }
 
-<h1>Hotel Management</h1>
 
-<div class="card-columns">
-    @foreach (var item in Model)
-    {
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">@item.Name</h5>
-                <p class="card-text">@item.Description</p>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Location: @item.Location</li>
-                    <li class="list-group-item">Price: @item.Price</li>
-                    <li class="list-group-item">Phone: @item.PhoneNumber</li>
-                    <li class="list-group-item">Address: @item.Address</li>
-                    <li class="list-group-item">Email: @item.Email</li>
-                </ul>
-                <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-primary">Edit</a>
-                <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display: inline-block;">
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this hotel?')">Delete</button>
-                </form>
-            </div>
-        </div>
-    }
-</div>
+@if (Model.Any())
+{
+    <h1>Hotel Management</h1>
+
+    <div class="card-columns">
+        @foreach (var item in Model)
+        {
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">@item.Description</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Location: @item.Location</li>
+                            <li class="list-group-item">Price: @item.Price</li>
+                            <li class="list-group-item">Phone: @item.PhoneNumber</li>
+                            <li class="list-group-item">Address: @item.Address</li>
+                            <li class="list-group-item">Email: @item.Email</li>
+                        </ul>
+                        <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-primary">Edit</a>
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display: inline-block;">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this hotel?')">Delete</button>
+                        </form>
+                    </div>
+                </div>
+        }
+    </div>
+}
+else
+{
+    <h1>Nie zarezerwowałeś/aś jeszcze żadnych hoteli</h1>
+}

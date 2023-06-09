@@ -19,8 +19,24 @@ namespace HoteLove.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var Hotel = await _hotelService.GetAll();
-            return View(Hotel);
+            var Hotels = await _hotelService.GetAll();
+            var viewModels = new List<ViewModel>();
+
+            foreach (var hotel in Hotels)
+            {
+                var comments = await _hotelService.GetCommentsByHotelId(hotel.Id);
+
+                var viewModel = new ViewModel
+                {
+                    Hotel = hotel,
+                    Comments = comments
+                };
+
+                viewModels.Add(viewModel);
+            }
+
+
+            return View(viewModels);
         }
 
         public IActionResult Privacy()
@@ -58,6 +74,30 @@ namespace HoteLove.Controllers
             // Przekieruj użytkownika na stronę z listą hoteli
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            // Pobierz hotel o danym Id
+            var hotel = await _hotelService.GetById(id);
+            if (hotel == null)
+            {
+                return NotFound();
+            }
+
+            // Pobierz komentarze dla danego hotelu
+            var comments = await _hotelService.GetCommentsByHotelId(id);
+
+            // Utwórz ViewModel zawierający hotel i komentarze
+            var viewModel = new ViewModel
+            {
+                Hotel = hotel,
+                Comments = comments
+            };
+
+            return View(viewModel);
+        }
+
+
 
     }
 }

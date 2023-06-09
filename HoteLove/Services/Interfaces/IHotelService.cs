@@ -8,7 +8,7 @@ namespace HoteLove.Services.Interfaces
         Task Create(HotelModel hotel);
         Task<IEnumerable<HotelModel>> GetAll();
         Task AddComment(CommentModel comment);
-
         Task<HotelModel> GetById(int id);
+        public Task<IEnumerable<CommentModel>> GetCommentsByHotelId(int hotelId);
     }
 }
