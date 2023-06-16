@@ -21,6 +21,8 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\lib\Fonts\" />
+    <Folder Include="wwwroot\lib\Photos\" />
   </ItemGroup>
 
 </Project>

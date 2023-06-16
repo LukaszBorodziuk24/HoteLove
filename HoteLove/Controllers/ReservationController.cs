@@ -3,6 +3,7 @@ using HoteLove.Services;
 using HoteLove.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
 
 namespace HoteLove.Controllers
@@ -35,13 +36,21 @@ namespace HoteLove.Controllers
         {
             var userId = _userContext.GetUserId();
 
+            //ModelState["CreatedAt"]!.ValidationState = ModelValidationState.Valid;
+            //ModelState["HotelId"]!.ValidationState = ModelValidationState.Valid;
+
+
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
             var reservation = new ReservationModel
             {
                 HotelId = hotelId,
                 UserId = userId,
                 ReservationDate = DateTime.Now,
 
-                // Ustawienie innych właściwości rezerwacji, jeśli są wymagane
             };
 
             _reservationService.Create(reservation);

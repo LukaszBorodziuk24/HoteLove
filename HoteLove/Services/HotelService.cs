@@ -2,8 +2,7 @@
 using HoteLove.Services.Interfaces;
 using HoteLove;
 using Microsoft.EntityFrameworkCore;
-
-
+using Microsoft.AspNetCore.Identity;
 
 namespace HoteLove.Services
 {
@@ -22,10 +21,8 @@ namespace HoteLove.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<HotelModel>> GetAll()
-        {
-            return await _dbContext.Hotels.ToListAsync();
-        }
+        public async Task<IEnumerable<HotelModel>> GetAll() 
+            => await _dbContext.Hotels.ToListAsync();
 
         public async Task AddComment(CommentModel comment)
         {
@@ -33,7 +30,8 @@ namespace HoteLove.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<HotelModel> GetById(int id) => await _dbContext.Hotels.FindAsync(id);
+        public async Task<HotelModel> GetById(int id) 
+            => await _dbContext.Hotels.FindAsync(id);
 
         public async Task<IEnumerable<CommentModel>> GetCommentsByHotelId(int hotelId) => 
             await _dbContext.Comments.Where(comment => comment.HotelId== hotelId).ToListAsync();

@@ -9,25 +9,25 @@ namespace HoteLove.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Nazwa jest wymagana")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Lokalizacja jest wymagana")]
         public string Location { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Krótki opis jest wymagany")]
         public string Description { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Podanie ceny jest konieczne")]
         public string Price { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Numer telefonu jest wymagany")]
         public string PhoneNumber { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Adres jest wymagany")]
         public string Address { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Email jest wymagany")]
         public string Email { get; set; }
 
         [Required]

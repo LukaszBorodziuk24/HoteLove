@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HoteLove.Migrations
 {
     [DbContext(typeof(DbHoteLoveContext))]
-    [Migration("20230609170829_Init")]
+    [Migration("20230615150203_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -95,6 +95,29 @@ namespace HoteLove.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Hotels");
+                });
+
+            modelBuilder.Entity("HoteLove.Models.RatingModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("HotelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("HoteLove.Models.ReservationModel", b =>

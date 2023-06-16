@@ -1,55 +1,113 @@
 ﻿@using HoteLove.Services.Interfaces;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
 @model IEnumerable<HoteLove.Models.ViewModel>
 
 @{
     ViewData["Title"] = "Nasza Oferta";
 }
+
 @inject IReservationService reservationService;
 @inject IUserContext userContext;
-<h1>Nasza oferta</h1>
-<div class="card-columns">
-    @foreach (var item in Model)
-    {
-        var hotel = item.Hotel;
-        var comments = item.Comments;
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">@hotel.Name</h5>
-                <p class="card-text">@hotel.Description</p>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Lokalizacja: @hotel.Location</li>
-                    <li class="list-group-item">Cena za noc: @hotel.Price</li>
-                    <li class="list-group-item">Numer telefonu: @hotel.PhoneNumber</li>
-                    <li class="list-group-item">Adres: @hotel.Address</li>
-                    <li class="list-group-item">Email: @hotel.Email</li>
-                </ul>
+@inject IRatingService ratingService;
+<p>
 
-                <h5>Komentarze:</h5>
-                @if (User.IsInRole("Regular_User") && !reservationService.IsHotelAlreadyReserved(userContext.GetUserId(), hotel.Id))
-                {   
-                    <form action="@Url.Action("Create", "Reservation")" method="post">
-                        <input type="hidden" name="hotelId" value="@hotel.Id" />
-                        <button type="submit" class="btn btn-primary">Zarezerwuj</button>
-                    </form>
+</p>
+@if(Model.Any()){
+    <div class="card-columns-centered">
+        <div class="card-columns">
+            @foreach (var item in Model)
+            {
+                var hotel = item.Hotel;
+                var comments = item.Comments;
+                <div class="card">
 
-                }
-                @if (User.IsInRole("Regular_User"))
-                {
-                    @Html.Partial("_commentform", hotel.Id)
-                }
-                @foreach (var comment in comments)
-                {
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">@comment.Content</p>
-                            <p class="card-text">Data dodania: @comment.CreatedAt</p>
+                    <div class="card-body">
+                        <div class="card-details">
+                            <div class="card-image-placeholder" style="background-image: url('lib/Photos/roberto-nickson-emqnSQwQQDo-unsplash.jpg');background-size: cover">
+                                @*Wyświetlanie przycisków do oceny tylko zwykłym użytkownikom*@
+                                @if (User.IsInRole("Regular_User"))
+                                {
+                                    <div class="rating-buttons-container">
+                                        <div class="rating-overlay"></div>
+                                        <div class="rating-buttons">
+                                            <div class="rating-count">@ratingService.CalculateAverageRating(hotel.Id)</div>
+                                            <form action="@Url.Action("CreateRating", "Home")" method="post">
+                                                <input type="hidden" name="hotelId" value="@hotel.Id" />
+                                                <button class="rating-button" type="submit" name="rating" value="1">1</button>
+                                                <button class="rating-button" type="submit" name="rating" value="2">2</button>
+                                                <button class="rating-button" type="submit" name="rating" value="3">3</button>
+                                                <button class="rating-button" type="submit" name="rating" value="4">4</button>
+                                                <button class="rating-button" type="submit" name="rating" value="5">5</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                }
+                            </div> <!-- Duży prostokąt -->
+                            <div class="card-small-images">
+                                <div class="card-small-image" style="background-image: url('lib/Photos/christian-lambert-ycyXpdhCnp8-unsplash.jpg');background-size: cover"></div> <!-- Mały prostokąt 1 -->
+                                <div class="card-small-image" style="background-image: url('lib/Photos/eddi-aguirre-ZAVHbpOn4Jk-unsplash.jpg');background-size: cover"></div> <!-- Mały prostokąt 2 -->
+                                <div class="card-small-image" style="background-image: url('lib/Photos/the-anam-_twiIcIsp2s-unsplash.jpg');background-size: cover"></div> <!-- Mały prostokąt 3 -->
+                            </div>
+                            <div class="description-container">
+                                @hotel.Description
+                            </div>
+                        </div>
+                        <h5 class="card-title">
+                            <span class="title">@hotel.Name</span>
+                            <span class="price">@hotel.Price zł</span>
+                        </h5>
+                        <ul class="list-group list-group-horizontal">
+                            <li class="list-group-item">@hotel.Location, @hotel.Address</li>
+                            <li class="list-group-item">Numer telefonu: @hotel.PhoneNumber</li>
+                            <li class="list-group-item">Email: @hotel.Email</li>
+                        </ul>
+                        @*                    sprawdzenie czy użytkownik ma odpowiednią role to korzystania z rezerwacji oraz
+                czy nie zarezerwował już wcześniej tego hotelu*@
+                        @if (User.IsInRole("Regular_User") && !reservationService.IsHotelAlreadyReserved(userContext.GetUserId(), hotel.Id))
+                        {
+                            <form action="@Url.Action("Create", "Reservation")" method="post">
+                                <input type="hidden" name="hotelId" value="@hotel.Id" />
+                                <button type="submit" class="btn btn-primary btn-reserve">Zarezerwuj</button>
+                            </form>
+                        }
+                        <h5 style="color: #5E5C72;font-size: 18px; font-weight: 500">Komentarze:</h5>
+                        <div class="comment-section">
+                            <div class="comment-content">
+                                @foreach (var comment in comments)
+                                {
+                                    <div class="comment" style="height: 40px;">
+                                        <!-- Ustalona wysokość dla każdego komentarza -->
+                                        <div class="comment-text">@comment.Content</div>
+                                    </div>
+                                }
+                            </div>
+                            @if (User.IsInRole("Regular_User"))
+                            {
+                                <div class="comment-form">
+                                <form action="@Url.Action("CreateComment", "Home")" method="post" class="d-flex">
+                                    <input type="hidden" name="hotelId" value="@hotel.Id" />
+                                    <textarea class="form-control custom-textarea" rows="2" placeholder="Dodaj komentarz" name="content"></textarea>
+                                    <button type="submit" class="btn btn-primary">
+                                        <span class="material-symbols-outlined">
+                                            <img src="lib/Fonts/send_FILL0_wght700_GRAD0_opsz24.svg" />
+                                        </span>
+                                    </button>
+                                </form>
+                                </div>
+                            }
+
                         </div>
                     </div>
-                }
 
-                    
-
-            </div>
+                </div>
+            }
         </div>
-    }
-</div>
+    </div>
+}
+else{
+    <h1>Nie dodano jeszcze żadnych ofert</h1>
+}

@@ -1,109 +1,116 @@
-﻿using HoteLove;
-using HoteLove.Models;
+﻿using HoteLove.Models;
+using HoteLove.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-[Authorize(Roles = "Hotel_User")]
-public class ManagementController : Controller
+
+
+namespace HoteLove.Controllers
 {
-    private readonly DbHoteLoveContext _dbContext;
-    private readonly UserManager<IdentityUser> _userManager;
-
-    public ManagementController(DbHoteLoveContext dbContext, UserManager<IdentityUser> userManager)
+    [Authorize(Roles = "Hotel_User")]
+    public class ManagementController : Controller
     {
-        _dbContext = dbContext;
-        _userManager = userManager;
-    }
+        private readonly DbHoteLoveContext _dbContext;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IManagementService _managementService;
 
-    public IActionResult Index()
-    {
-        // Pobierz id aktualnie zalogowanego użytkownika
-        var userId = _userManager.GetUserId(User);
-
-        // Pobierz hotele utworzone przez danego użytkownika
-        var hotels = _dbContext.Hotels.Where(h => h.UserId == userId).ToList();
-
-        // Przekazuj hotele do widoku w celu wyświetlenia
-
-        return View(hotels);
-    }
-
-    // Inne metody akcji
-
-    public async Task<IActionResult> Edit(int id)
-    {
-        // Pobierz id aktualnie zalogowanego użytkownika
-        var userId = _userManager.GetUserId(User);
-
-        // Sprawdź, czy dany hotel należy do zalogowanego użytkownika
-        var hotel = await _dbContext.Hotels.FirstOrDefaultAsync(h => h.Id == id && h.UserId == userId);
-
-        if (hotel == null)
+        public ManagementController(DbHoteLoveContext dbContext, UserManager<IdentityUser> userManager, IManagementService managementService)
         {
-            return NotFound();
+            _dbContext = dbContext;
+            _userManager = userManager;
+            _managementService = managementService;
         }
 
-        // Przekazuj hotel do widoku w celu edycji, przy zachowaniu niezmienialnych pól
-        var model = new HotelModel
+        public IActionResult Index()
         {
-            Description = hotel.Description,
-            Price = hotel.Price,
-            PhoneNumber = hotel.PhoneNumber,
-            Address = hotel.Address,
-            Email = hotel.Email
-        };
+            // Pobierz id aktualnie zalogowanego użytkownika
+            var userId = _userManager.GetUserId(User);
 
-        return View(model);
-    }
+            // Pobierz hotele utworzone przez danego użytkownika
+            var hotels = _managementService.GetHotelsByUserId(userId);
 
-    [HttpPost]
-    public async Task<IActionResult> Edit(HotelModel model)
-    {
-        // Pobierz id aktualnie zalogowanego użytkownika
-        var userId = _userManager.GetUserId(User);
+            // Przekazuj hotele do widoku w celu wyświetlenia
 
-        // Sprawdź, czy dany hotel należy do zalogowanego użytkownika
-        var hotel = await _dbContext.Hotels.FirstOrDefaultAsync(h => h.Id == model.Id && h.UserId == userId);
-
-        if (hotel == null)
-        {
-            return NotFound();
+            return View(hotels);
         }
 
-        // Zaktualizuj tylko zmienne pola
-        hotel.Description = model.Description;
-        hotel.Price = model.Price;
-        hotel.PhoneNumber = model.PhoneNumber;
-        hotel.Address = model.Address;
-        hotel.Email = model.Email;
+        // Inne metody akcji
 
-        await _dbContext.SaveChangesAsync();
-
-        return RedirectToAction("Index");
-    
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Delete(int id)
-    {
-        // Pobierz id aktualnie zalogowanego użytkownika
-        var userId = _userManager.GetUserId(User);
-
-        // Sprawdź, czy dany hotel należy do zalogowanego użytkownika
-        var hotel = await _dbContext.Hotels.FirstOrDefaultAsync(h => h.Id == id && h.UserId == userId);
-
-        if (hotel == null)
+        public async Task<IActionResult> Edit(int id)
         {
-            return NotFound();
+            // Pobierz id aktualnie zalogowanego użytkownika
+            var userId = _userManager.GetUserId(User);
+
+            // Sprawdź, czy dany hotel należy do zalogowanego użytkownika
+            var hotel = await _dbContext.Hotels.FirstOrDefaultAsync(h => h.Id == id && h.UserId == userId);
+
+
+            // Przekazuj hotel do widoku w celu edycji, przy zachowaniu niezmienialnych pól
+            var model = new HotelModel
+            {
+                Description = hotel.Description,
+                Price = hotel.Price,
+                PhoneNumber = hotel.PhoneNumber,
+                Address = hotel.Address,
+                Email = hotel.Email
+            };
+
+            return View(model);
         }
 
-        _dbContext.Hotels.Remove(hotel);
-        await _dbContext.SaveChangesAsync();
+        [HttpPost]
+        public async Task<IActionResult> Edit(HotelModel model)
+        {
+            // Pobierz id aktualnie zalogowanego użytkownika
+            var userId = _userManager.GetUserId(User);
 
-        return RedirectToAction("Index");
+            // Sprawdź, czy dany hotel należy do zalogowanego użytkownika
+            var hotel = await _dbContext.Hotels.FirstOrDefaultAsync(h => h.Id == model.Id && h.UserId == userId);
+
+
+            // Zaktualizuj tylko zmienne pola
+            hotel.Description = model.Description;
+            hotel.Price = model.Price;
+            hotel.PhoneNumber = model.PhoneNumber;
+            hotel.Address = model.Address;
+            hotel.Email = model.Email;
+
+
+            ModelState["User"]!.ValidationState = ModelValidationState.Valid;
+            ModelState["UserId"]!.ValidationState = ModelValidationState.Valid;
+            ModelState["Name"]!.ValidationState = ModelValidationState.Valid;
+            ModelState["Location"]!.ValidationState = ModelValidationState.Valid;
+
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var hotel = await _dbContext.Hotels.FirstOrDefaultAsync(h => h.Id == id && h.UserId == userId);
+
+
+            _dbContext.Hotels.Remove(hotel);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
     }
-
 }
+
