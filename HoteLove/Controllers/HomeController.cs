@@ -60,29 +60,23 @@ namespace HoteLove.Controllers
         //Odpowiednio zabezpieczona metoda do tworzenia komentarzy, tylko dla użytkowników "Regular_User"
         [HttpPost]
         [Authorize(Roles = "Regular_User")]
-        public async Task<IActionResult> CreateComment(int hotelId, string content)
+        public async Task<IActionResult> CreateComment([FromBody] CommentCreateModel model)
         {
-            var hotel = await _hotelService.GetById(hotelId);
-            if (hotel == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
             var comment = new CommentModel
             {
-                Content = content,
+                Content = model.Content,
                 CreatedAt = DateTime.Now,
-                HotelId = hotelId
+                HotelId = model.HotelId
             };
-
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("Index");
-            }
 
             await _hotelService.AddComment(comment);
 
-            return RedirectToAction("Index");
+            return Json(new { success = true });
         }
 
 
@@ -105,25 +99,35 @@ namespace HoteLove.Controllers
         //nie dodał oceny w takim przypadku ocena nie zostaje dodana
         [HttpPost]
         [Authorize(Roles = "Regular_User")]
-        public async Task<IActionResult> CreateRating(int hotelId, int rating)
+        public async Task<IActionResult> CreateRating([FromBody] RatingCreateModel ratingCreate)
         {
-            string userId = _userContext.GetUserId();
-            if(!_ratingService.HasUserRatedHotel(hotelId, userId))
+            if (!ModelState.IsValid)
             {
-                RatingModel newRating = new RatingModel
-                {
-                    HotelId = hotelId,
-                    UserId = userId,
-                    Value = rating
-                };
-
-                await _ratingService.Create(newRating);
-                return RedirectToAction("Index", "Home");
+                return BadRequest(new { error = "Nieprawidłowe dane wejściowe." });
             }
-            return RedirectToAction("Index", "Home");
 
+            string userId = _userContext.GetUserId();
 
+            if (_ratingService.HasUserRatedHotel(ratingCreate.HotelId, userId))
+            {
+                return Conflict(new { error = "Użytkownik już ocenił ten hotel." });
+            }
+
+            RatingModel newRating = new RatingModel
+            {
+                HotelId = ratingCreate.HotelId,
+                UserId = userId,
+                Value = ratingCreate.Value
+            };
+
+            await _ratingService.Create(newRating);
+
+            var newAverageRating = _ratingService.CalculateAverageRating(ratingCreate.HotelId);
+
+            return Ok(new { newAverageRating });
         }
+
+
 
 
 

@@ -4,35 +4,66 @@
     ViewData["Title"] = "Hotel Management";
 }
 
-@*Wyświetlanie tylko tych hoteli utworzonych przez konkretnego użytkownika z rolą "Hotel_User"*@
-@if (Model.Any())
-{
-    <h1>Hotel Management</h1>
-
-    <div class="card-columns">
-        @foreach (var item in Model)
+<div class="management-bg scrollable-items-list">
+    <div class="container py-5">
+        @if (Model.Any())
         {
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Name</h5>
-                        <p class="card-text">@item.Description</p>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Location: @item.Location</li>
-                            <li class="list-group-item">Price: @item.Price</li>
-                            <li class="list-group-item">Phone: @item.PhoneNumber</li>
-                            <li class="list-group-item">Address: @item.Address</li>
-                            <li class="list-group-item">Email: @item.Email</li>
-                        </ul>
-                        <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-primary">Edit</a>
-                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display: inline-block;">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć hotel?')">Delete</button>
-                        </form>
+            <h1 class="mb-5">Hotel Management</h1>
+
+            @* <div class="rounded-3" style="background-color: rgb(149, 194, 161);">
+                <h1 class="text-white">Hotel Management</h1>
+            </div> *@
+
+            <div class="row g-4">
+                @foreach (var item in Model)
+                {
+                    <div class="col-12 col-md-4 d-flex justify-content-center">
+                        <div class="management-hotel-card h-100">
+                            <div class="position-relative w-100">
+                                <img src="~/lib/Photos/roberto-nickson-emqnSQwQQDo-unsplash.jpg" 
+                                     class="img-fluid rounded-top w-100"
+                                     alt="Hotel Image"
+                                     style="height: 200px; object-fit: cover;">
+                            </div>
+                            <div class="p-3">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <h5 class="mb-2">@item.Name</h5>
+                                        <p class="text-muted mb-1 small">@item.Address</p>
+                                        <p class="text-muted small">@item.Location</p>
+                                    </div>
+                                    <div class="col-5 text-end">
+                                        <h5 class="text-primary">$@item.Price</h5>
+                                    </div>
+                                </div>
+                                <div class="mt-3 d-flex justify-content-between">
+                                    <a href="@Url.Action("Edit", new { id = item.Id })" 
+                                       class="btn btn-primary rounded-pill px-4">
+                                        <i class="fas fa-edit me-1"></i> Edit
+                                    </a>
+                                    <form asp-action="Delete" asp-route-id="@item.Id" method="post">
+                                        <button type="submit" 
+                                                class="btn btn-danger rounded-pill px-4" 
+                                                onclick="return confirm('Czy na pewno chcesz usunąć hotel?')">
+                                            <i class="fas fa-trash-alt me-1"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="d-flex align-items-center justify-content-center min-vh-75">
+                <div class="rounded-3" style="background-color: rgb(149, 194, 161);">
+                    <h1 class="text-white">Nie dodałeś/aś jeszcze żadnych hoteli.</h1>
                 </div>
+            </div>
+
+            
         }
     </div>
-}
-else
-{
-    <h1>Nie dodałeś/aś jeszcze żadnych hoteli</h1>
-}
+</div>

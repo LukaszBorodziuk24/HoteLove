@@ -22,6 +22,7 @@ namespace HoteLove.Controllers
             _userContext = userContext;
         }
 
+        //Wyświetlane są tylko te hotele które dany użytkownik "Regular_User" zarezerwował
         public IActionResult Index()
         {
             var userId = _userContext.GetUserId();
@@ -35,11 +36,6 @@ namespace HoteLove.Controllers
         public IActionResult Create(int hotelId)
         {
             var userId = _userContext.GetUserId();
-
-            //ModelState["CreatedAt"]!.ValidationState = ModelValidationState.Valid;
-            //ModelState["HotelId"]!.ValidationState = ModelValidationState.Valid;
-
-
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Index");
@@ -58,6 +54,7 @@ namespace HoteLove.Controllers
             return RedirectToAction("Index");
         }
 
+        //Usuwanie rezerwacji
         [HttpPost]
         public IActionResult Delete(int hotelId)
         {

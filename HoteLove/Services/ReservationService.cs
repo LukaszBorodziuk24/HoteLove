@@ -17,8 +17,12 @@ namespace HoteLove.Services
 
         public void Create(ReservationModel reservation)
         {
-            _dbContext.Reservations.Add(reservation);
-            _dbContext.SaveChanges();
+            if (!IsHotelAlreadyReserved(reservation.UserId, reservation.HotelId))
+            {
+                _dbContext.Reservations.Add(reservation);
+                _dbContext.SaveChanges();
+            }
+            
         }
 
         public void Delete(ReservationModel reservation)

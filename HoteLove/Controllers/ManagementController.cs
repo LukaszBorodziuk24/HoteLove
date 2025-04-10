@@ -27,29 +27,18 @@ namespace HoteLove.Controllers
 
         public IActionResult Index()
         {
-            // Pobierz id aktualnie zalogowanego użytkownika
             var userId = _userManager.GetUserId(User);
-
-            // Pobierz hotele utworzone przez danego użytkownika
             var hotels = _managementService.GetHotelsByUserId(userId);
-
-            // Przekazuj hotele do widoku w celu wyświetlenia
 
             return View(hotels);
         }
 
-        // Inne metody akcji
-
+        //Kontroler widoku Edit, pobieramy z bazy danych poprzednie dane i wyswietlamy je w formularzu tak
+        //by użytkownik wiedział co zmienia
         public async Task<IActionResult> Edit(int id)
         {
-            // Pobierz id aktualnie zalogowanego użytkownika
             var userId = _userManager.GetUserId(User);
-
-            // Sprawdź, czy dany hotel należy do zalogowanego użytkownika
             var hotel = await _dbContext.Hotels.FirstOrDefaultAsync(h => h.Id == id && h.UserId == userId);
-
-
-            // Przekazuj hotel do widoku w celu edycji, przy zachowaniu niezmienialnych pól
             var model = new HotelModel
             {
                 Description = hotel.Description,
@@ -62,24 +51,20 @@ namespace HoteLove.Controllers
             return View(model);
         }
 
+        //Zapis nowych danych do bazy
         [HttpPost]
         public async Task<IActionResult> Edit(HotelModel model)
         {
-            // Pobierz id aktualnie zalogowanego użytkownika
             var userId = _userManager.GetUserId(User);
-
-            // Sprawdź, czy dany hotel należy do zalogowanego użytkownika
             var hotel = await _dbContext.Hotels.FirstOrDefaultAsync(h => h.Id == model.Id && h.UserId == userId);
 
-
-            // Zaktualizuj tylko zmienne pola
             hotel.Description = model.Description;
             hotel.Price = model.Price;
             hotel.PhoneNumber = model.PhoneNumber;
             hotel.Address = model.Address;
             hotel.Email = model.Email;
 
-
+            //Pomicięcie w walidacji pól których nie przypisujemy w formularzu
             ModelState["User"]!.ValidationState = ModelValidationState.Valid;
             ModelState["UserId"]!.ValidationState = ModelValidationState.Valid;
             ModelState["Name"]!.ValidationState = ModelValidationState.Valid;
@@ -97,6 +82,7 @@ namespace HoteLove.Controllers
 
         }
 
+        //Usuwanie hotelu
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {

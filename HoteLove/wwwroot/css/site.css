@@ -19,6 +19,13 @@ html {
 
 body {
     margin-bottom: 60px;
+    
+}
+
+
+
+footer {
+    background-color: #171717;
 }
 
 .card-subtitle {
@@ -32,10 +39,11 @@ body {
 }
 
 .card {
-    width: 800px;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
     border: 1px solid #E2E2E2;
-    border-radius: 15px;
+    border-radius: 0.9375rem;
+    min-height: 35rem;
+    position: relative;
 }
 
 
@@ -44,8 +52,7 @@ body {
 .card-columns-centered {
     display: flex;
     justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
+    width: 100%;
 }
 
 
@@ -137,40 +144,70 @@ body {
 }
 
 .comment-section {
+    min-height: 6.25rem;
+    max-height: 12rem;
     display: flex;
-    justify-content: space-between;
-    max-height: 110px;
     flex-direction: column;
-}
-
-.comment {
-    display: flex;
-    border-bottom: 1px solid #E2E2E2;
-    gap: 10px;
 }
 
 .comment-content {
     flex: 1;
-    border: solid 1px;
-    width: 540px;
-    border: solid 1px #5E5C72;
-    display: flex;
-    min-height: 38px;
-    flex-direction: column;
-    padding-left: 10px;
-    border-radius: 10px 10px 0 0;
-    border: 1px solid #E2E2E2;
     overflow-y: auto;
+    border: solid 1px #E2E2E2;
+    padding: 0.4rem;
+    border-radius: 0.625rem;
+    max-height: 1rem;
+    max-height: 10rem;
+}
+
+.comment {
+    margin-bottom: 0.3125rem;
+    padding-bottom: 0.3125rem;
+    border-bottom: 1px solid #E2E2E2;
+    min-height: 2rem;
+}
+
+.comment:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 .comment-text {
     color: #5E5C72;
-    font-size: 15px;
+    font-size: 13px;
+    margin-top: 2px;
 }
 
 .comment-form {
-    display: flex;
-    align-content: center;
+    position: absolute;
+    bottom: 1rem;
+    left: 1.25rem;
+    right: 11rem;
+    height: 2.375rem;
+}
+
+.comment-form textarea {
+    font-size: 0.8125rem;
+    resize: none;
+    height: 100%;
+}
+
+.comment-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.comment-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.comment-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.comment-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 .card-small-images .card-small-image:last-child {
@@ -195,11 +232,11 @@ body {
 
 .btn-reserve {
     position: absolute;
-    bottom: 16px;
-    right: 20px;
-    border-radius: 15px;
-    width: 140px;
-    height: 38px;
+    bottom: 1rem;
+    right: 1.25rem;
+    border-radius: 0.9375rem;
+    width: 8.75rem;
+    height: 2.375rem;
 }
 
 textarea.form-control {
@@ -256,4 +293,89 @@ textarea.form-control {
     color: white;
     font-size: 22px;
     margin-right: 5px;
+}
+
+
+.add-hotel-image {
+    background-image: url('../lib/Photos/hotelBg1.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.add-hotel-bg {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.home-index-bg {
+
+    background-image: url('../lib/Photos/hotelBg2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.login-index-bg {
+    background-image: url('../lib/Photos/hotelBg3.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.scrollable-items-list {
+    max-height: 100vh;
+    overflow-y: auto;
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollable-items-list::-webkit-scrollbar {
+    display: none;
+}
+
+.reservations-bg {
+    background-image: url('../lib/Photos/hotelBg4.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 90vh;
+    overflow-x: auto;
+}
+
+
+
+
+
+
+.form-label {
+    color: #495057;
+}
+
+.preview-image-container {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.hotel-info {
+    border-left: 4px solid #0d6efd;
+}
+
+.management-bg {
+    background-image: url('../lib/Photos/hotelBg1.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 90vh;
+    overflow-x: auto;
+}
+
+.management-hotel-card {
+    width: 350px;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background-color: white;
+    transition: transform 0.2s;
+    overflow: hidden;
+}
+
+.management-hotel-card:hover {
+    transform: translateY(-5px);
 }

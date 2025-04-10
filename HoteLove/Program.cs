@@ -66,7 +66,7 @@ using (var scope = app.Services.CreateScope())
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var context = scope.ServiceProvider.GetRequiredService<DbHoteLoveContext>();
 
-    // Inicjalizacja ról
+    // Inicjalizacja rÃ³l
     if (!roleManager.RoleExistsAsync("Regular_User").Result)
     {
         IdentityRole role = new IdentityRole("Regular_User");

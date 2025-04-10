@@ -32,6 +32,8 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Management" asp-action="Index">Zarządzanie</a>
                             </li>
                         }
+
+
                         @if (User.IsInRole("Regular_User"))
                         {
                             <li class="nav-item">
@@ -46,14 +48,13 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main>
+
+        @RenderBody()
+    </main>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
+        <div class="container" style="color:aliceblue">
             &copy; 2023 - HoteLove - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>

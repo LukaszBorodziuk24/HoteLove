@@ -4,35 +4,57 @@
     ViewData["Title"] = "Moje rezerwacje";
 }
 
-<h1>Moje rezerwacje</h1>
-
-@*Wyświetlanie tylko tych hoteli zarezerwowanych przez konkretnego użytkownika z rolą "Regular_User"*@
-@if (Model.Any())
-{
-    <div class="card-columns">
-        @foreach (var hotel in Model)
+<div class="reservations-bg scrollable-items-list">
+    <div class="container py-5">
+        @if (Model.Any())
         {
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">@hotel.Name</h5>
-                    <p class="card-text">@hotel.Description</p>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Lokalizacja: @hotel.Location</li>
-                        <li class="list-group-item">Cena za noc: @hotel.Price</li>
-                        <li class="list-group-item">Numer telefonu: @hotel.PhoneNumber</li>
-                        <li class="list-group-item">Adres: @hotel.Address</li>
-                        <li class="list-group-item">Email: @hotel.Email</li>
-                    </ul>
-                    <form action="@Url.Action("Delete", "Reservation")" method="post">
-                        <input type="hidden" name="hotelId" value="@hotel.Id" />
-                        <button type="submit" class="btn btn-danger">Usuń</button>
-                    </form>
+            <h1 class="mb-5 text-white">Moje rezerwacje</h1>
+
+
+            <div class="row g-4">
+                @foreach (var hotel in Model)
+                {
+                    <div class="col-12 col-md-4 d-flex justify-content-center">
+                        <div class="management-hotel-card h-100" style="width: 350px;">
+                            <div class="position-relative">
+                                <img src="~/lib/Photos/roberto-nickson-emqnSQwQQDo-unsplash.jpg" 
+                                     class="img-fluid rounded-top" 
+                                     alt="Hotel Image"
+                                     style="height: 200px; object-fit: cover; width: 100%; height: 100%;">
+                            </div>
+                            <div class="p-3">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <h5 class="mb-2">@hotel.Name</h5>
+                                        <p class="text-muted mb-1 small">@hotel.Address</p>
+                                        <p class="text-muted small">@hotel.Location</p>
+                                    </div>
+                                    <div class="col-5 text-end">
+                                        <h5 class="text-primary">$@hotel.Price</h5>
+                                    </div>
+                                </div>
+                                <div class="mt-3 d-flex justify-content-end">
+                                    <form action="@Url.Action("Delete", "Reservation")" method="post">
+                                        <input type="hidden" name="hotelId" value="@hotel.Id" />
+                                        <button type="submit" class="btn btn-danger rounded-pill px-4 hover-transparent">
+                                            <i class="fas fa-times me-1"></i> Anuluj
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="d-flex align-items-center justify-content-center min-vh-75">
+                <div class="rounded-3" style="background-color: rgb(149, 194, 161);">
+                    <h1 class="text-white">Nie masz żadnych zarezerwowanych hoteli.</h1>
                 </div>
+                
             </div>
         }
     </div>
-}
-else
-{
-    <p>Nie masz żadnych zarezerwowanych hoteli.</p>
-}
+</div>

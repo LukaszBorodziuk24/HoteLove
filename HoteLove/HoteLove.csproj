@@ -22,7 +22,8 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\lib\Fonts\" />
-    <Folder Include="wwwroot\lib\Photos\" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://json.schemastore.org/azure-iot-edge-deployment-2.0.json" /></VisualStudio></ProjectExtensions>
 
 </Project>

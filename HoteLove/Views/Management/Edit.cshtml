@@ -1,40 +1,79 @@
 ﻿@model HotelModel
 
-<h1>Edytuj hotel</h1>
+<div class="edit-page-bg min-vh-100 d-flex align-items-center py-4 add-hotel-image">
+    <div class="container">
+        <div class="row">
+            <div class="col-11 col-sm-9 col-md-7 col-lg-5">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h2 class="mb-0 py-2 fs-4">Edycja Hotelu</h2>
+                    </div>
+                    
+                    <div class="card-body">
+                        <form asp-action="Edit" method="post">
+                            <div class="form-group mb-3">
+                                <label class="form-label fw-bold">Cena za noc</label>
+                                <input class="form-control" type="text" asp-for="Price" />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
 
-@*Formularz edycji hotelu*@
-<form asp-action="Edit" method="post">
-    
-    <div class="form-group">
-        <label>Opis:</label>
-        <input type="text" class="form-control" asp-for="Description" />
-        <span asp-validation-for="Description" class="text-danger"></span>
+                            <div class="form-group mb-3">
+                                <label class="form-label fw-bold">Opis</label>
+                                <textarea class="form-control" asp-for="Description" 
+                                        style="height: 20vh; resize: none" 
+                                        placeholder="Opisz swój hotel..."></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
 
-    </div>
-    <div class="form-group">
-        <label>Cena za noc:</label>
-        <input type="text" class="form-control" asp-for="Price" />
-        <span asp-validation-for="Price" class="text-danger"></span>
+                            <div class="form-group mb-3">
+                                <label class="form-label fw-bold">Adres</label>
+                                <input class="form-control" type="text" asp-for="Address" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
 
-    </div>
-    <div class="form-group">
-        <label>Numer telefonu:</label>
-        <input type="text" class="form-control" asp-for="PhoneNumber" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Telefon</label>
+                                    <input class="form-control" type="text" asp-for="PhoneNumber" 
+                                           placeholder="123-123-123" pattern="\d{3}-\d{3}-\d{3}" />
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Email</label>
+                                    <input class="form-control" type="text" asp-for="Email" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
 
-    </div>
-    <div class="form-group">
-        <label>Adres:</label>
-        <input type="text" class="form-control" asp-for="Address" />
-        <span asp-validation-for="Address" class="text-danger"></span>
+                            <div class="preview-image-container rounded-3 mb-3" 
+                                 style="height: 30vh; 
+                                        background-image: url('/lib/Photos/roberto-nickson-emqnSQwQQDo-unsplash.jpg'); 
+                                        background-size: cover; 
+                                        background-position: center;">
+                            </div>
 
+                            <div class="d-flex justify-content-between">
+                                <a href="@Url.Action("Index")" class="btn btn-outline-secondary rounded-pill px-4 hover-transparent">
+                                    <i class="fas fa-arrow-left me-1"></i> Powrót
+                                </a>
+                                <button type="submit" class="btn btn-primary rounded-pill px-4 hover-transparent">
+                                    <i class="fas fa-save me-1"></i> Zapisz zmiany
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label>Email:</label>
-        <input type="text" class="form-control" asp-for="Email" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
 
 
